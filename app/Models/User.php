@@ -1,16 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Attributes\RoleAttribute;
+use App\Enums\Rbac\Permission;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+final class User extends Authenticatable implements MustVerifyEmail
 {
+    use HasApiTokens;
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use HasUlids;
+    use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +34,13 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'day_of_birth',
+        'gender',
+        'phone',
+        'profile_image',
+        'remember_token',
+        'email_verified_at',
     ];
 
     /**
@@ -32,6 +52,23 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function logs(): HasMany
+    {
+        return $this->hasMany(
+            related: ApiLog::class,
+            foreignKey: 'user_id',
+        );
+    }
+
+    public function hasPermission(Permission $permission): bool
+    {
+
+        $roleAttributes = $permission->getAttributes(RoleAttribute::class);
+
+        return collect($roleAttributes)
+            ->contains(fn ($roleAttribute) => in_array($this->role, $roleAttribute->roles, true));
+    }
 
     /**
      * Get the attributes that should be cast.

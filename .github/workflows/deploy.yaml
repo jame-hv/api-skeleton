@@ -1,0 +1,44 @@
+name: Deploy
+
+on:
+  push:
+    branches: [develop] # Change to your branch you want to deploy from, default is develop
+  workflow_dispatch: # Allow manual triggers
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Start deployment
+        run: echo "Starting deployment to EC2 instance..."
+
+      # Uncomment the following steps if you want to deploy to EC2
+
+      # - name: Set up SSH
+      #   run: |
+      #     mkdir -p ~/.ssh
+      #     echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+      #     chmod 600 ~/.ssh/id_rsa
+      #     ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      # - name: Deploy to EC2
+      #   run: |
+      #     # Connect to EC2 and perform the deployment
+      #     ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "cd /home/${{ secrets.EC2_USER }}/${{secrets.APP_NAME}} && \
+      #       # Pull latest code from GitHub
+      #       git pull origin main && \
+      #       # Restart Docker containers to ensure latest code is used
+      #       sudo docker compose -f docker-compose.staging.yaml down && docker compose -f docker-compose.staging.yaml up -d && \
+      #       # Install dependencies using Docker
+      #       sudo docker compose -f docker-compose.staging.yaml exec -T app composer install --no-interaction --optimize-autoloader --no-dev && \
+      #       # Run migrations
+      #       sudo docker compose -f docker-compose.staging.yaml exec -T app php artisan migrate && \
+      #       # Optimize the application
+      #       sudo docker compose -f docker-compose.staging.yaml exec -T app php artisan optimize:clear"
+
+      # - name: Clean up
+      #   if: always()
+      #   run: |
+      #     rm -f ~/.ssh/id_rsa

@@ -1,0 +1,75 @@
+services:
+  # PHP Service
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+      args:
+        USER_ID: ${HOST_USER_ID:-1000}
+        GROUP_ID: ${HOST_GROUP_ID:-1000}
+    container_name: ${APP_NAME}_app
+    restart: unless-stopped
+    tty: true
+    working_dir: /var/www
+    ports:
+      - "5173:5173" # Port for Vite dev server
+      - "9000:9000" # Port for PHP-FPM
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+
+  # Nginx Service
+  webserver:
+    image: nginx:stable
+    container_name: ${APP_NAME}_nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./docker/nginx/ssl:/etc/nginx/ssl/
+
+    networks:
+      - app-network
+
+  # MySQL Service
+  mysql:
+    image: mysql:8.0
+    container_name: ${APP_NAME}_db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes:
+      - ./docker/mysql/data:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - app-network
+
+  # Redis Service
+  # redis:
+  #   image: redis:alpine
+  #   container_name: ${APP_NAME}_redis
+  #   restart: unless-stopped
+  #   tty: true
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - ./docker/redis/data:/data
+  #   networks:
+  #     - app-network
+
+# Docker Networks
+networks:
+  app-network:
+    driver: bridge
