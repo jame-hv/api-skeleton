@@ -9,4 +9,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', LoginController::class)->name('login');
 Route::post('register', RegisterController::class)->name('register');
-Route::post('logout', LogoutController::class)->name('logout');
+
+// Ensure that the logout route is protected by the auth:sanctum middleware
+Route::post('logout', LogoutController::class)->name('logout')->middleware('auth:sanctum');

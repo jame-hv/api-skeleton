@@ -14,8 +14,6 @@ final class ShowProfileController extends Controller
     public function __invoke(User $user): Response
     {
 
-
-
         $profile = $user->only(['day_of_birth', 'gender','phone', 'profile_image']);
 
         return new JsonResponse(
