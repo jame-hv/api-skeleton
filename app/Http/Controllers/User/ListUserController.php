@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use App\Actions\User\ListUserAction;
-use App\DataObjects\User\ListUserParams;
+use App\DTOs\User\ListUserParams;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User\UserResource;
 use App\Http\Responses\PaginatedCollectionResponse;

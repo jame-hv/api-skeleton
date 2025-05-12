@@ -1,11 +1,18 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/base-api",
+    "name": "laravel-api-skeleton",
     "type": "project",
     "description": "The skeleton api by Laravel framework.",
     "keywords": [
         "laravel",
         "framework"
+    ],
+    "authors": [
+        {
+            "name": "Jame-hv",
+            "email": "vudhoang2know@gmail.com",
+            "role": "Developer"
+        }
     ],
     "license": "MIT",
     "require": {

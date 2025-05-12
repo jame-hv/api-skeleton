@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Concerns\Rbac;
+namespace App\Attributes;
 
 use Attribute;
 

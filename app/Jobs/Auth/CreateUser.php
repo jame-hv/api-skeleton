@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs\Auth;
 
 use App\Actions\Auth\CreateUserAction;
-use App\DataObjects\Auth\RegisterUser;
+use App\DTOs\Auth\RegisterUser;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\Queue\Queueable;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Profile;
 
-use App\DataObjects\Profile\EditProfile;
+use App\DTOs\Profile\EditProfile;
 use App\Enums\Profile\Gender;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;

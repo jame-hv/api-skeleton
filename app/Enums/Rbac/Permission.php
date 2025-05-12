@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Enums\Rbac;
 
+use App\Attributes\DescriptionAttribute;
 use App\Attributes\RoleAttribute;
-use App\Concerns\Rbac\DescriptionAttribute;
 use App\Concerns\Rbac\HasAttributes;
 
 enum Permission: string

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataObjects\Profile;
+namespace App\DTOs\Profile;
 
 use App\Enums\Profile\Gender;
 

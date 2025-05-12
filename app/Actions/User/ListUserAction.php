@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\User;
 
 use App\Concerns\Filters\FilterableEntity;
-use App\DataObjects\User\ListUserParams;
+use App\DTOs\User\ListUserParams;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 

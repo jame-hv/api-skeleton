@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\DataObjects\Auth;
+namespace App\DTOs\Auth;
 
 final readonly class RegisterUser
 {
