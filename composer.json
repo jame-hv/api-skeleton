@@ -1,6 +1,6 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel-api-skeleton",
+    "name": "jamevu/laravel-api-skeleton",
     "type": "project",
     "description": "The skeleton api by Laravel framework.",
     "keywords": [
@@ -9,7 +9,7 @@
     ],
     "authors": [
         {
-            "name": "Jame-hv",
+            "name": "jamevu",
             "email": "vudhoang2know@gmail.com",
             "role": "Developer"
         }
