@@ -52,6 +52,7 @@ services:
     networks:
       - app-network
 
+  # PMA Service
   phpmyadmin:
     image: phpmyadmin
     container_name: ${APP_NAME}_phpmyadmin
@@ -66,6 +67,33 @@ services:
       # Users must enter their MySQL credentials manually
     networks:
       - app-network
+
+
+  # MailHog Service
+  mailhog:
+    image: mailhog/mailhog
+    container_name: ${APP_NAME}_mailhog
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - app-network
+
+  # Redis Service
+  # redis:
+  #   image: redis:alpine
+  #   container_name: ${APP_NAME}_redis
+  #   restart: unless-stopped
+  #   tty: true
+  #   ports:
+  #     - "6379:6379"
+  #   volumes:
+  #     - ./docker/redis/data:/data
+  #   networks:
+  #     - app-network
+
 # Docker Networks
 networks:
   app-network:
