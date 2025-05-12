@@ -29,5 +29,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(User::class, UserPolicy::class);
+
+
+        // Scramble docs prod only
+        Gate::define('viewApiDocs', fn (User $user) => in_array($user->email, [
+            'admin@example.com',
+            // Add other authorized emails here
+        ]));
     }
 }
