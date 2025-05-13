@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Models;
+namespace Tests\Unit\Auth;
 
 use App\Enums\Rbac\Permission;
 use App\Enums\Rbac\Role;
