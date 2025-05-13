@@ -31,7 +31,7 @@ jobs:
             # Run migrations
             sudo docker compose exec -T app php artisan migrate --force && \
             # Optimize the application
-            sudo docker compose exec -T app php artisan optimize:clear
+            sudo docker compose exec -T app php artisan optimize:clear"
 
       - name: Clean up
         if: always()
