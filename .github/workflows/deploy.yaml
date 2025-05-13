@@ -1,0 +1,42 @@
+name: Deploy to AWS EC2
+
+on:
+  push:
+    branches: [main] # Change to your main branch name if different
+  workflow_dispatch: # Allow manual triggers
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        run: |
+          # Connect to EC2 and perform the deployment
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "cd /home/${{ secrets.EC2_USER }}/app && \
+            # Pull latest code from GitHub
+            git pull origin main && \
+            # Restart Docker containers to ensure latest code is used
+            docker-compose down && docker-compose up -d && \
+            # Install dependencies using Docker
+            docker-compose exec -T app composer install --no-interaction --optimize-autoloader --no-dev && \
+            # Run migrations
+            docker-compose exec -T app php artisan migrate --force && \
+            # Optimize the application
+            docker-compose exec -T app php artisan optimize && \
+            docker-compose exec -T app php artisan config:cache && \
+            docker-compose exec -T app php artisan route:cache && \
+            docker-compose exec -T app php artisan view:cache"
+
+      - name: Clean up
+        if: always()
+        run: |
+          rm -f ~/.ssh/id_rsa

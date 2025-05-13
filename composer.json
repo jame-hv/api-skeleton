@@ -75,6 +75,9 @@
         ],
         "pint": [
             "@php vendor/bin/pint "
+        ],
+        "lint": [
+            "@php vendor/bin/pint --test"
         ]
     },
     "extra": {
