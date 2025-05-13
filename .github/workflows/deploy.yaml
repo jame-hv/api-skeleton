@@ -25,7 +25,7 @@ jobs:
             # Pull latest code from GitHub
             git pull origin main && \
             # Restart Docker containers to ensure latest code is used
-            sudo docker compose down && docker-compose up -d && \
+            sudo docker compose down && docker compose up -d && \
             # Install dependencies using Docker
             sudo docker compose exec -T app composer install --no-interaction --optimize-autoloader --no-dev && \
             # Run migrations
