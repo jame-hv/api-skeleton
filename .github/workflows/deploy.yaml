@@ -21,20 +21,17 @@ jobs:
       - name: Deploy to EC2
         run: |
           # Connect to EC2 and perform the deployment
-          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "cd /home/${{ secrets.EC2_USER }}/app && \
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "cd /home/${{ secrets.EC2_USER }}/api-skeleton && \
             # Pull latest code from GitHub
             git pull origin main && \
             # Restart Docker containers to ensure latest code is used
-            docker-compose down && docker-compose up -d && \
+            sudo docker compose down && docker-compose up -d && \
             # Install dependencies using Docker
-            docker-compose exec -T app composer install --no-interaction --optimize-autoloader --no-dev && \
+            sudo docker compose exec -T app composer install --no-interaction --optimize-autoloader --no-dev && \
             # Run migrations
-            docker-compose exec -T app php artisan migrate --force && \
+            sudo docker compose exec -T app php artisan migrate --force && \
             # Optimize the application
-            docker-compose exec -T app php artisan optimize && \
-            docker-compose exec -T app php artisan config:cache && \
-            docker-compose exec -T app php artisan route:cache && \
-            docker-compose exec -T app php artisan view:cache"
+            sudo docker compose exec -T app php artisan optimize:clear && \
 
       - name: Clean up
         if: always()
